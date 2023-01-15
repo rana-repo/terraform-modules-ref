@@ -40,7 +40,7 @@ resource "aws_nat_gateway" "nat_gateway_az2" {
 
   # to ensure proper ordering, it is recommended to add an explicit dependency
   # on the internet gateway for the vpc.
-  depends_on = [var.internal_gateway]
+  depends_on = [var.internet_gateway]
 }
 
 # create private route table az1 and add route through nat gateway az1
