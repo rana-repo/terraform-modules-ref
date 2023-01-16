@@ -65,3 +65,20 @@ resource "aws_security_group" "ecs_security_group" {
     Name = "ecs security group"
   }
 }
+
+# Create a Security Group to allow mysql port 3306
+resource "aws_security_group" "rds-sg" {
+  name   = "my-rds-sg"
+  description = "to allow mysql port 3306"
+  vpc_id = var.vpc_id
+
+ingress {
+  from_port         = 3306
+  protocol          = "tcp"
+  to_port           = 3306
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+tags   = {
+    Name = "database security group"
+  }
+}
