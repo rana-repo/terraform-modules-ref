@@ -82,3 +82,48 @@ tags   = {
     Name = "database security group"
   }
 }
+
+# Create a security group to allow efs outbound
+
+resource "aws_security_group" "webserver_sg" {
+  name        = "webserver security group"
+  description = "Allow efs outbound traffic"
+  vpc_id      = var.vpc_id
+  ingress {
+     cidr_blocks = ["0.0.0.0/0"]
+     from_port = 22
+     to_port = 22
+     protocol = "tcp"
+   }
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "webserver security group"
+  }
+}
+
+# Create a security group to allow efs inbound
+
+resource "aws_security_group" "efs" {
+   name = "efs security group"
+   description= "Allows inbound efs traffic from ec2"
+   vpc_id = var.vpc_id
+
+   ingress {
+     security_groups = [aws_security_group.webserver_sg.id]
+     from_port = 2049
+     to_port = 2049 
+     protocol = "tcp"
+   }     
+        
+   egress {
+     security_groups = [aws_security_group.webserver_sg.id]
+     from_port = 0
+     to_port = 0
+     protocol = "-1"
+   }
+ }

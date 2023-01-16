@@ -9,3 +9,11 @@ output "ecs_security_group_id" {
 output "rds_security_group_id" {
   value = aws_security_group.rds-sg.id
 }
+
+output "efs_security_group_id" {
+  value = aws_security_group.efs.id
+}
+
+output "webserver_security_group_id" {
+  value = aws_security_group.webserver_sg.id
+}
